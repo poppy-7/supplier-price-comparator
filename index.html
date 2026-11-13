@@ -35,6 +35,44 @@
         }
     </style>
 </head>
+<script>
+    function calculateCosts() {
+    const rows = document.querySelectorAll("tr");
+
+    let lowestCost = Infinity;
+    let bestRow = null;
+
+    rows.forEach(row => {
+        const inputs = row.querySelectorAll("input");
+
+        if (inputs.length === 0) {
+            return;
+        }
+
+        const price = Number(inputs[0].value);
+        const packaging = Number(inputs[1].value);
+        const freight = Number(inputs[2].value);
+
+        const total = price + packaging + freight;
+
+        row.cells[4].textContent = total.toFixed(2);
+
+        // 清除之前的高亮
+        row.style.backgroundColor = "";
+
+        // 寻找最低成本
+        if (total < lowestCost) {
+            lowestCost = total;
+            bestRow = row;
+        }
+    });
+
+    // 高亮最低成本供应商
+    if (bestRow) {
+        bestRow.style.backgroundColor = "#d9f7e5";
+    }
+}
+</script>
 <body>
     <div class="container">
         <h1>Supplier Price Comparator</h1>
@@ -46,3 +84,39 @@
     </div>
 </body>
 </html>
+<h2>供应商报价对比</h2>
+
+<table border="1">
+    <tr>
+        <th>供应商</th>
+        <th>产品单价（元）</th>
+        <th>包装费（元）</th>
+        <th>运费分摊（元）</th>
+        <th>综合成本（元）</th>
+    </tr>
+
+    <tr>
+        <td>A供应商</td>
+        <td><input type="number" value="10.00" step="0.01"></td>
+        <td><input type="number" value="0.50" step="0.01"></td>
+        <td><input type="number" value="0.30" step="0.01"></td>
+        <td>10.80</td>
+    </tr>
+
+    <tr>
+        <td>B供应商</td>
+        <td><input type="number" value="9.80" step="0.01"></td>
+        <td><input type="number" value="0.80" step="0.01"></td>
+        <td><input type="number" value="0.40" step="0.01"></td>
+        <td>11.00</td>
+    </tr>
+
+    <tr>
+        <td>C供应商</td>
+        <td><input type="number" value="10.20" step="0.01"></td>
+        <td><input type="number" value="0.20" step="0.01"></td>
+        <td><input type="number" value="0.20" step="0.01"></td>
+        <td>10.60</td>
+    </tr>
+</table>
+<button onclick="calculateCosts()">计算综合成本</button>
